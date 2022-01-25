@@ -15,10 +15,9 @@ public class EmployeePayRollService1 {
 		this();
 		this.employeePayRollList = employeePayRollList;
 	}
-	
 private void readEmployeePayrollData(Scanner consoleInputReader) {		
 		System.out.println("Enter the Employee Id : ");
-		int id = consoleInputReader.nextInt();
+ 		int id = consoleInputReader.nextInt();
 		System.out.println("Enter the Employee Name : ");
 		String name = consoleInputReader.next();
 		System.out.println("Enter the Employee Salary : ");
@@ -26,14 +25,12 @@ private void readEmployeePayrollData(Scanner consoleInputReader) {
 		
 		employeePayRollList.add(new EmployeePayRollData(id, name, salary));
 	}
-	
 	private EmployeePayRollData getEmployeePayrollData(String name) {	
 		return this.employeePayRollList.stream()
 				.filter(EmployeePayRollDataItem -> EmployeePayRollDataItem.employeeName.equals(name))
 				.findFirst()
 				.orElse(null);
-	}
-	
+	}	
 public List<EmployeePayRollData> readEmployeePayrollData(IOService ioService) {
 		if(ioService.equals(IOService.DB_IO))
 			this.employeePayRollList = employeePayRollDBService.readData();
@@ -46,6 +43,38 @@ public void writeEmployeePayrollData(IOService ioService) {
 	else 
 		if(ioService.equals(IOService.FILE_IO))
 		new EmployeePayrollFileIOService().writeData(employeePayRollList);
+}
+public void updateEmployeeSalary(String name, double salary) {
+	
+	int result = employeePayRollDBService.updateEmployeeData(name,salary);
+	if(result == 0) 
+		return;	
+	EmployeePayRollData employeePayrollData = this.getEmployeePayrollData(name);
+	if(employeePayrollData != null)
+		employeePayrollData.employeeSalary = salary;
+}
+public boolean checkEmployeePayrollInSyncWithDB(String name) {
+		
+		List<EmployeePayRollData> employeePayrollDataList = employeePayRollDBService.getEmployeePayrollData(name);
+		return employeePayrollDataList.get(0).equals(getEmployeePayrollData(name));
+	}
+
+public List<EmployeePayRollData> getEmployeeDetailsBasedOnStartDate(IOService ioService, String startDate) {
+	if(ioService.equals(IOService.DB_IO))
+		this.employeePayRollList = employeePayRollDBService.getEmployeeDetailsBasedOnStartDateUsingStatement(startDate);
+	return this.employeePayRollList;
+}
+
+public List<EmployeePayRollData> getEmployeeDetailsBasedOnStartDateUsingPreparedStatement(IOService ioService, String startDate) {
+	
+	if(ioService.equals(IOService.DB_IO))
+		this.employeePayRollList = employeePayRollDBService.getEmployeeDetailsBasedOnStartDateUsingPreparedStatement(startDate);
+	return this.employeePayRollList;
+}
+public List<EmployeePayRollData> getEmployeeDetailsBasedOnName(IOService ioService, String name) {
+	if(ioService.equals(IOService.DB_IO))
+		this.employeePayRollList = employeePayRollDBService.getEmployeeDetailsBasedOnNameUsingStatement(name);
+	return this.employeePayRollList;
 }
 
 public static void main(String[] args) {
