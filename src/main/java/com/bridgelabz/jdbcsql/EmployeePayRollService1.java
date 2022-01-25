@@ -86,6 +86,7 @@ public static void main(String[] args) {
 	
 	employeePayrollService.readEmployeePayrollData(consoleInputReader);
 	employeePayrollService.writeEmployeePayrollData(IOService.CONSOLE_IO);		
+	System.out.println("exit the application");
 }
 }
 
