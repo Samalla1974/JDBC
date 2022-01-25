@@ -1,15 +1,16 @@
 package com.bridgelabz.jdbcsql;
 import java.time.LocalDate;
-
+import com.mysql.cj.protocol.InternalDate;
 public class EmployeePayRollData {
-	int id;
-	String name;
-	double salary;
-
+	public int employeeId;
+	public String  employeeName;
+	public double employeeSalary;
+	public InternalDate startDate;
+	
 	public EmployeePayRollData(Integer id,String name,double salary) {
-	this.id=id;
-	this.name=name;
-	this.salary=salary;	
+	this.employeeId= id;
+	this.employeeName=name;
+	this.employeeSalary=salary;	
 	}
 	public EmployeePayRollData(int id,String name,double salary,LocalDate statDate) {
 		this(id,name,salary);
@@ -17,15 +18,15 @@ public class EmployeePayRollData {
 	}
 	@Override
 	public String toString() {
-		return "id=" +id+",name='" + name + '/'  + ", salary=" + salary;
+		return "EmployeeId=" +employeeId+",EmployeeName='" + employeeName + '/'  + ", salary=" + employeeSalary;
 	}	
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if(o == null || getClass() != o.getClass()) return false;
 		EmployeePayRollData that = (EmployeePayRollData) o;
-		return id == that.id &&
-				Double.compare(that.salary, salary) == 0 &&
-				name.equals(that.name);
+		return employeeId == that.employeeId &&
+				Double.compare(that.employeeSalary, employeeSalary) == 0 &&
+				employeeName.equals(that.employeeName);
 	}
 }
